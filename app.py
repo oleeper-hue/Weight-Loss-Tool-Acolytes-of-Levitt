@@ -5,8 +5,10 @@ import pickle
 import pandas as pd
 
 from sklearn.linear_model import LinearRegression #matches model type
+import sklearn
+v = sklearn.__version__
 
-st.set_page_config(page_title="Weight Loss Tool", page_icon="⚖️")
+st.set_page_config(page_title=v, page_icon="⚖️")
 
 # ---------- Paths ----------
 HERE = Path(__file__).parent
