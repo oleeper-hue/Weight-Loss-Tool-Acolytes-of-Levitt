@@ -73,6 +73,12 @@ def num_slider_float(name, default, lo, hi, step=1):
     val = float(r.get("default", default))
     return st.slider(name.replace("_", " ").title(), min_value=lo, max_value=hi, value=val, step=step)
 
+#all dropdowns for categorical features as they will appear in Streamlit
+gender = st.selectbox("Gender", categorical_unique_vals["Gender"])
+workout_type = st.selectbox("Workout Type", categorical_unique_vals["Workout_Type"])
+experience_label = st.selectbox("Experience Level", experience_levels)
+experience = experience_ord[experience_label]
+
 # all sliders for numeric features as they will appear in Streamlit
 age = num_slider("Age", 2, 1, 3)
 weight = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01)
@@ -87,12 +93,6 @@ st.caption("*Water intake is a daily average")
 water_intake = num_slider_float("Water_Intake (liters)", 2, 1, 3, step=0.01)
 frequency = num_slider("Workout_Frequency (days/week)", 2, 1, 3)
 bmi = num_slider_float("BMI", 2, 1, 3, step=0.1)
-
-#all dropdowns for categorical features as they will appear in Streamlit
-gender = st.selectbox("Gender", categorical_unique_vals["Gender"])
-workout_type = st.selectbox("Workout Type", categorical_unique_vals["Workout_Type"])
-experience_label = st.selectbox("Experience Level", experience_levels)
-experience = experience_ord[experience_label]
 
 new_user = {
     "Age": age,
