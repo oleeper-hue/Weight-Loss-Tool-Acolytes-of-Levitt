@@ -120,7 +120,7 @@ if st.button("Predict"):
 
         st.subheader("Prediction Result")
         if pred:
-            st.success(np.round(pred, decimals=2))
+            st.success(str(np.round(pred, decimals=2)) + " weekly calorie burn!")
         else:
             st.error("Prediction Error")
 
