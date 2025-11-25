@@ -46,7 +46,7 @@ st.caption("Two steps for machine learning to guide weight loss")
 st.header("Step 1: Enter Exercise Information to Estimate Calorie Burn")
 
 def num_slider(name, default, lo, hi, step=1):
-    r = numeric_ranges.get(name, {})
+    r = numerical_ranges.get(name, {})
     lo = int(r.get("min", lo))
     hi = int(r.get("max", hi))
     val = int(r.get("default", default))
