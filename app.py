@@ -74,16 +74,16 @@ def num_slider_float(name, default, lo, hi, step=1):
 
 # all sliders for numeric features as they will appear in Streamlit
 age = num_slider("Age", 2, 1, 3)
-weight = num_slider_float("Weight (kg)", 2, 1, 3)
-height = num_slider_float("Height (m)", 2, 1, 3)
+weight = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01)
+height = num_slider_float("Height (m)", 2, 1, 3, step=0.01)
 max_bpm = num_slider("Max_BPM", 2, 1, 3)
 avg_bpm = num_slider("Avg_BPM", 2, 1, 3)
 resting_bpm = num_slider("Resting_BPM", 2, 1, 3)
-duration = num_slider_float("Session_Duration (hours)", 2, 1, 3)
+duration = num_slider_float("Session_Duration (hours)", 2, 1, 3, step=0.1)
 fat_percentage = num_slider("Fat_Percentage", 2, 1, 3)
-water_intake = num_slider_float("Water_Intake (liters)", 2, 1, 3)
+water_intake = num_slider_float("Water_Intake (liters)", 2, 1, 3, step=0.01)
 frequency = num_slider("Workout_Frequency (days/week)", 2, 1, 3)
-bmi = num_slider_float("BMI", 2, 1, 3)
+bmi = num_slider_float("BMI", 2, 1, 3, step=0.1)
 
 #all dropdowns for categorical features as they will appear in Streamlit
 gender = st.selectbox("Gender", categorical_unique_vals["Gender"])
