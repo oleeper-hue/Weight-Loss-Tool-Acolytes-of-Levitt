@@ -37,8 +37,8 @@ except Exception as e:
 #extract items from data_info dictionary
 expected_features = data_info["expected_features"]
 categorical_unique_vals = data_info["categorical_unique_vals"]
-numerical_ranges: data_info["numerical_ranges"]
-numeric_features: data_info["numeric_features"]
+numerical_ranges = data_info["numerical_ranges"]
+numeric_features = data_info["numeric_features"]
 
 st.title("Weight Loss Tool")
 st.caption("Two steps for machine learning to guide weight loss")
