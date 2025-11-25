@@ -40,6 +40,19 @@ categorical_unique_vals = data_info["categorical_unique_vals"]
 numerical_ranges = data_info["numerical_ranges"]
 numeric_features = data_info["numeric_features"]
 
+experience_levels = ["Beginner", "Intermediate", "Advanced"] #special encoding for label-encoded variable
+experience_ord = { 
+    "Beginner": 1,
+    "Intermediate": 2,
+    "Advanced": 3
+}
+
+# Helper: label->code for UI selections just for Experience_Level
+def label_to_code(selection_label: str, mapping: dict) -> str:
+    # mapping is code->label; invert to label->code
+    inv = {v: k for k, v in mapping.items()}
+    return inv[selection_label]
+
 st.title("Weight Loss Tool")
 st.caption("Two steps for machine learning to guide weight loss")
 
@@ -68,7 +81,8 @@ bmi = num_slider("BMI", 2, 1, 3)
 #all dropdowns for categorical features as they will appear in Streamlit
 gender = st.selectbox("Gender", categorical_unique_vals["Gender"])
 workout_type = st.selectbox("Workout_Type", categorical_unique_vals["Workout_Type"])
-experience = st.selectbox("Experience_Level", categorical_unique_vals["Experience_Level"])
+experience_label = st.selectbox("Experience_Level", experience_levels)
+experience = experience_ord[experience_label]
 
 new_user = {
     "Age": age,
