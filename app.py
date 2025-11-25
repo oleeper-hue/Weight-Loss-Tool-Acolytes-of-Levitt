@@ -87,8 +87,8 @@ bmi = num_slider_float("BMI", 2, 1, 3, step=0.1)
 
 #all dropdowns for categorical features as they will appear in Streamlit
 gender = st.selectbox("Gender", categorical_unique_vals["Gender"])
-workout_type = st.selectbox("Workout_Type", categorical_unique_vals["Workout_Type"])
-experience_label = st.selectbox("Experience_Level", experience_levels)
+workout_type = st.selectbox("Workout Type", categorical_unique_vals["Workout_Type"])
+experience_label = st.selectbox("Experience Level", experience_levels)
 experience = experience_ord[experience_label]
 
 new_user = {
