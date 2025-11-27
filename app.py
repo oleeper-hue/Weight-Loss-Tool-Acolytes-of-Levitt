@@ -130,7 +130,7 @@ if st.button("Predict"):
     except Exception as e:
         st.error(f"Inference failed: {e}")
 
-st.header("Step 2: Enter Goal Weight and Weight Loss Timeline for Calorie Intake Plan Based On Exercise")
+st.header("Step 2: Enter Goal Weight and Weight Loss Timeline for Calorie Intake Plan Based On Calorie Burn")
 st.caption("Please complete step 1 before attempting step 2")
 
 goal_weight_kg = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01, id='goal')
