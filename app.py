@@ -179,3 +179,5 @@ if (st.button("Calculate Calorie Intake for Timeline") and step_1_completed):
             st.success(np.round(daily_calorie_target, decimals=2))
     except Exception as e:
         st.error(f"Inference failed: {e}")
+else:
+    st.error('Please complete step 1 before attempting step 2')
