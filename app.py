@@ -174,7 +174,12 @@ if st.button("Predict"):
 
         if pred:
             st.success(str(np.round(pred, decimals=2)) + " weekly calorie burn!")
-            timeline(pred)
+            st.success(
+                'Move to step 2 if you would like to calculate your 
+                calorie intake to achieve your target weight in a 
+                set amount of of weeks, given that you maintain your 
+                calorie burn from your exercise routine'
+                )
         else:
             st.error("Prediction Error")
 
