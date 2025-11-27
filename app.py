@@ -80,7 +80,7 @@ experience = experience_ord[experience_label]
 
 # all sliders for numeric features as they will appear in Streamlit
 age = num_slider("Age", 2, 1, 3)
-weight = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01, key=1234)
+weight = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01, key='current_weight')
 height = num_slider_float("Height (m)", 2, 1, 3, step=0.01)
 max_bpm = num_slider("Max_BPM", 2, 1, 3)
 avg_bpm = num_slider("Avg_BPM", 2, 1, 3)
