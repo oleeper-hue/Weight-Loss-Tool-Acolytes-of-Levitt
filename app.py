@@ -1,4 +1,3 @@
-
 from pathlib import Path
 import streamlit as st
 import pickle
@@ -59,19 +58,19 @@ st.caption("Two steps for machine learning to guide weight loss")
 
 st.header("Step 1: Enter Exercise Information to Estimate Calorie Burn")
 
-def num_slider(name, default, lo, hi, step=1):
+def num_slider(name, default, lo, hi, step=1, id=None):
     r = numerical_ranges.get(name, {})
     lo = int(r.get("min", lo))
     hi = int(r.get("max", hi))
     val = int(r.get("default", default))
-    return st.slider(name.replace("_", " ").title(), min_value=lo, max_value=hi, value=val, step=step)
+    return st.slider(name.replace("_", " ").title(), min_value=lo, max_value=hi, value=val, step=step, key=id)
 
-def num_slider_float(name, default, lo, hi, step=1):
+def num_slider_float(name, default, lo, hi, step=1, id=None):
     r = numerical_ranges.get(name, {})
     lo = float(r.get("min", lo))
     hi = float(r.get("max", hi))
     val = float(r.get("default", default))
-    return st.slider(name.replace("_", " ").title(), min_value=lo, max_value=hi, value=val, step=step)
+    return st.slider(name.replace("_", " ").title(), min_value=lo, max_value=hi, value=val, step=step, key=id)
 
 #all dropdowns for categorical features as they will appear in Streamlit
 gender = st.selectbox("Gender", categorical_unique_vals["Gender"])
@@ -81,7 +80,7 @@ experience = experience_ord[experience_label]
 
 # all sliders for numeric features as they will appear in Streamlit
 age = num_slider("Age", 2, 1, 3)
-weight = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01)
+weight = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01, id='current')
 height = num_slider_float("Height (m)", 2, 1, 3, step=0.01)
 max_bpm = num_slider("Max_BPM", 2, 1, 3)
 avg_bpm = num_slider("Avg_BPM", 2, 1, 3)
@@ -119,10 +118,62 @@ if st.button("Predict"):
         pred = best_model.predict(new_user_df)[0]
 
         st.subheader("Prediction Result")
+
         if pred:
             st.success(str(np.round(pred, decimals=2)) + " weekly calorie burn!")
+            st.success("Move to step 2 for calorie intake timeline to achieve goal weight")
         else:
             st.error("Prediction Error")
 
+    except Exception as e:
+        st.error(f"Inference failed: {e}")
+        
+st.divider()
+st.header("Step 2: Create Weight Loss Timeline from Calorie Burn")
+st.caption("Please complete step 1 before attempting step 2")
+
+goal_weight_kg = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01, id='goal')
+desired_timeline_weeks = st.slider("Weeks to Reach Goal Weight", min_value=4, max_value=104, value=16, step=1)
+
+#if (goal_weight_kg and desired_timeline_weeks and step_1_completed):
+if st.button("Calculate Calorie Intake for Timeline"):
+    try:
+        pred = best_model.predict(new_user_df)[0]
+        if new_user_df['Gender'].iloc[0] == 'Male':
+            bmr = 88.362 + (13.397 * new_user_df['Weight (kg)'].iloc[0]) + (4.799 * new_user_df['Height (m)'].iloc[0] * 100) - (5.677 * new_user_df['Age'].iloc[0])
+        elif new_user_df['Gender'].iloc[0] == 'Female':
+            bmr = 447.593 + (9.247 * new_user_df['Weight (kg)'].iloc[0]) + (3.098 * new_user_df['Height (m)'].iloc[0] * 100) - (4.330 * new_user_df['Age'].iloc[0])
+        else:
+            bmr = None # Handle cases where gender is not Male or Female
+        
+        adjusted_bmr = bmr + pred/7
+
+        current_weight_kg = new_user_df['Weight (kg)'].iloc[0]
+
+        CALORIES_PER_LB_LOSS = 500 # 500 calorie deficit = 1 lb loss
+        LBS_PER_KG = 2.20462 # Conversion factor from kilograms to pounds
+
+        # Calculate total weight to lose
+        weight_to_lose_kg = current_weight_kg - goal_weight_kg
+        
+        if weight_to_lose_kg <= 0:
+            st.error("Your goal weight is already reached or is not less than your current weight. No weight loss calculation needed.")
+        else:
+            # Convert weight to lose from kg to lbs
+            weight_to_lose_lbs = weight_to_lose_kg * LBS_PER_KG
+
+            # Calculate total calorie deficit needed based on lbs and user's rule
+            total_calorie_deficit_needed = weight_to_lose_lbs * CALORIES_PER_LB_LOSS
+
+            # Calculate total days in the desired timeline
+            total_days = desired_timeline_weeks * 7
+
+            # Calculate daily calorie deficit required
+            daily_calorie_deficiency = total_calorie_deficit_needed / total_days
+
+            daily_calorie_target = daily_calorie_deficiency + adjusted_bmr
+
+            st.success("Daily Calorie Target:")
+            st.success(np.round(daily_calorie_target, decimals=2))
     except Exception as e:
         st.error(f"Inference failed: {e}")
