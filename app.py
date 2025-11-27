@@ -175,9 +175,6 @@ if st.button("Calculate Calorie Intake for Timeline"):
 
             daily_calorie_target = daily_calorie_deficiency + adjusted_bmr
 
-            st.success("Estimated Calorie Deficit:")
-            st.success(np.round(daily_calorie_deficiency, decimals=2))
-
             st.success("Daily Calorie Target:")
             st.success(np.round(daily_calorie_target, decimals=2))
     except Exception as e:
