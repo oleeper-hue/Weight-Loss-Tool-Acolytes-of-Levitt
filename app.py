@@ -129,7 +129,8 @@ if st.button("Predict"):
 
     except Exception as e:
         st.error(f"Inference failed: {e}")
-
+        
+st.divider()
 st.header("Step 2: Create Weight Loss Timeline from Calorie Burn")
 st.caption("Please complete step 1 before attempting step 2")
 
