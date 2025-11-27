@@ -80,7 +80,7 @@ experience = experience_ord[experience_label]
 
 # all sliders for numeric features as they will appear in Streamlit
 age = num_slider("Age", 2, 1, 3)
-weight = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01, key='current_weight')
+weight = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01)
 height = num_slider_float("Height (m)", 2, 1, 3, step=0.01)
 max_bpm = num_slider("Max_BPM", 2, 1, 3)
 avg_bpm = num_slider("Avg_BPM", 2, 1, 3)
@@ -131,7 +131,7 @@ def timeline(predicted_cals):
   st.divider()
   st.subheader("Please enter your goal weight and weeks to achieve goal weight")
   # sliders for goal weight and weeks to reach goal weight
-  goal_weight_kg = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01, key=1)
+  goal_weight_kg = num_slider_float("Weight (kg)", 2, 1, 4, step=0.01)
   desired_timeline_weeks = st.slider("Weeks to Reach Goal Weight", min_value=4, max_value=104, value=16, step=1)
 
   CALORIES_PER_LB_LOSS = 500 # 500 calorie deficit = 1 lb loss
