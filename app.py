@@ -1,4 +1,3 @@
-
 from pathlib import Path
 import streamlit as st
 import pickle
@@ -111,18 +110,71 @@ new_user = {
     "BMI": bmi
 }
 
-new_user_df = pd.DataFrame([new_user])
-
 st.divider()
 if st.button("Predict"):
     try:
         pred = best_model.predict(new_user_df)[0]
 
         st.subheader("Prediction Result")
+
         if pred:
             st.success(str(np.round(pred, decimals=2)) + " weekly calorie burn!")
+            timeline(pred)
         else:
             st.error("Prediction Error")
 
     except Exception as e:
         st.error(f"Inference failed: {e}")
+
+def timeline(predicted_cals):
+  # Calculate BMR
+  if new_user_df['Gender'].iloc[0] == 'Male':
+    bmr = 88.362 + (13.397 * new_user_df['Weight (kg)'].iloc[0]) + (4.799 * new_user_df['Height (m)'].iloc[0] * 100) - (5.677 * new_user_df['Age'].iloc[0])
+  elif new_user_df['Gender'].iloc[0] == 'Female':
+    bmr = 447.593 + (9.247 * new_user_df['Weight (kg)'].iloc[0]) + (3.098 * new_user_df['Height (m)'].iloc[0] * 100) - (4.330 * new_user_df['Age'].iloc[0])
+  else:
+    bmr = None # Handle cases where gender is not Male or Female
+
+  adjusted_bmr = bmr + predicted_cals/7
+
+  print(f"Estimated (Adjusted) Basal Metabolic Rate: {adjusted_bmr:.2f}")
+
+  #get the user's current weight
+  current_weight_kg = new_user_df['Weight (kg)'].iloc[0]
+
+  st.divider()
+  st.subheader("Please enter your goal weight and weeks to achieve goal weight")
+  # sliders for goal weight and weeks to reach goal weight
+  goal_weight_kg = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01)
+  desired_timeline_weeks = st.slider("Weeks to Reach Goal Weight", min_value=4, max_value=104, value=16, step=1)
+
+  CALORIES_PER_LB_LOSS = 500 # 500 calorie deficit = 1 lb loss
+  LBS_PER_KG = 2.20462 # Conversion factor from kilograms to pounds
+
+  # Calculate total weight to lose
+  weight_to_lose_kg = current_weight_kg - goal_weight_kg
+
+  st.divider()
+  if st.button("Calculate Calorie Intake"):
+    if weight_to_lose_kg <= 0:
+      st.error("Your goal weight is already reached or is not less than your current weight. No weight loss calculation needed.")
+    else:
+      # Convert weight to lose from kg to lbs
+      weight_to_lose_lbs = weight_to_lose_kg * LBS_PER_KG
+
+      # Calculate total calorie deficit needed based on lbs and user's rule
+      total_calorie_deficit_needed = weight_to_lose_lbs * CALORIES_PER_LB_LOSS
+
+      # Calculate total days in the desired timeline
+      total_days = desired_timeline_weeks * 7
+
+      # Calculate daily calorie deficit required
+      daily_calorie_deficiency = total_calorie_deficit_needed / total_days
+
+      daily_calorie_target = daily_calorie_deficiency + adjusted_bmr
+
+      st.success("Estimated Calorie Deficit:")
+      st.success(np.round(daily_calorie_deficiency, decimals=2))
+
+      st.success("Daily Calorie Target:")
+      st.success(np.round(daily_calorie_target, decimals=2))w_user_df = pd.DataFrame([new_user])
