@@ -142,6 +142,7 @@ if st.button("Calculate Calorie Intake for Timeline"):
     try:
         if not step_1_completed:
             st.error('Please complete step 1 before step 2')
+            continue
         pred = best_model.predict(new_user_df)[0]
         if new_user_df['Gender'].iloc[0] == 'Male':
             bmr = 88.362 + (13.397 * new_user_df['Weight (kg)'].iloc[0]) + (4.799 * new_user_df['Height (m)'].iloc[0] * 100) - (5.677 * new_user_df['Age'].iloc[0])
