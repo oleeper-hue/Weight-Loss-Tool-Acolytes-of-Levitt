@@ -116,7 +116,7 @@ new_user_df = pd.DataFrame([new_user])
 st.divider()
 if st.button("Predict"):
     try:
-        pred = best_model.predict(new_user_df)[0]
+        global pred = best_model.predict(new_user_df)[0]
 
         st.subheader("Prediction Result")
 
