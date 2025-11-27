@@ -112,22 +112,6 @@ new_user = {
 
 new_user_df = pd.DataFrame([new_user])
 
-st.divider()
-if st.button("Predict"):
-    try:
-        pred = best_model.predict(new_user_df)[0]
-
-        st.subheader("Prediction Result")
-
-        if pred:
-            st.success(str(np.round(pred, decimals=2)) + " weekly calorie burn!")
-            timeline(pred)
-        else:
-            st.error("Prediction Error")
-
-    except Exception as e:
-        st.error(f"Inference failed: {e}")
-
 def timeline(predicted_cals):
   # Calculate BMR
   if new_user_df['Gender'].iloc[0] == 'Male':
@@ -180,3 +164,19 @@ def timeline(predicted_cals):
 
       st.success("Daily Calorie Target:")
       st.success(np.round(daily_calorie_target, decimals=2))
+
+st.divider()
+if st.button("Predict"):
+    try:
+        pred = best_model.predict(new_user_df)[0]
+
+        st.subheader("Prediction Result")
+
+        if pred:
+            st.success(str(np.round(pred, decimals=2)) + " weekly calorie burn!")
+            timeline(pred)
+        else:
+            st.error("Prediction Error")
+
+    except Exception as e:
+        st.error(f"Inference failed: {e}")
