@@ -128,31 +128,28 @@ if st.button("Predict"):
     except Exception as e:
         st.error(f"Inference failed: {e}")
 
-if new_user_df['Gender'].iloc[0] == 'Male':
-    bmr = 88.362 + (13.397 * new_user_df['Weight (kg)'].iloc[0]) + (4.799 * new_user_df['Height (m)'].iloc[0] * 100) - (5.677 * new_user_df['Age'].iloc[0])
-elif new_user_df['Gender'].iloc[0] == 'Female':
-    bmr = 447.593 + (9.247 * new_user_df['Weight (kg)'].iloc[0]) + (3.098 * new_user_df['Height (m)'].iloc[0] * 100) - (4.330 * new_user_df['Age'].iloc[0])
-else:
-    bmr = None # Handle cases where gender is not Male or Female
-
-adjusted_bmr = bmr + predicted_cals/7
-
-current_weight_kg = new_user_df['Weight (kg)'].iloc[0]
-
 st.header("Step 2: Enter Goal Weight and Weight Loss Timeline for Calorie Intake Plan Based On Exercise")
 st.caption("Please complete step 1 before attempting step 2")
 
-goal_weight_kg = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01, id='target')
-desired_timeline_weeks = st.slider("Weeks to Reach Goal Weight", min_value=4, max_value=104, value=16, step=1)
-
-CALORIES_PER_LB_LOSS = 500 # 500 calorie deficit = 1 lb loss
-LBS_PER_KG = 2.20462 # Conversion factor from kilograms to pounds
-
-# Calculate total weight to lose
-weight_to_lose_kg = current_weight_kg - goal_weight_kg
-
 if (goal_weight_kg and desired_timeline_weeks):
     try:
+        if new_user_df['Gender'].iloc[0] == 'Male':
+            bmr = 88.362 + (13.397 * new_user_df['Weight (kg)'].iloc[0]) + (4.799 * new_user_df['Height (m)'].iloc[0] * 100) - (5.677 * new_user_df['Age'].iloc[0])
+        elif new_user_df['Gender'].iloc[0] == 'Female':
+            bmr = 447.593 + (9.247 * new_user_df['Weight (kg)'].iloc[0]) + (3.098 * new_user_df['Height (m)'].iloc[0] * 100) - (4.330 * new_user_df['Age'].iloc[0])
+        else:
+            bmr = None # Handle cases where gender is not Male or Female
+        
+        adjusted_bmr = bmr + predicted_cals/7
+
+        current_weight_kg = new_user_df['Weight (kg)'].iloc[0]
+
+        CALORIES_PER_LB_LOSS = 500 # 500 calorie deficit = 1 lb loss
+        LBS_PER_KG = 2.20462 # Conversion factor from kilograms to pounds
+
+        # Calculate total weight to lose
+        weight_to_lose_kg = current_weight_kg - goal_weight_kg
+        
         if weight_to_lose_kg <= 0:
             st.error("Your goal weight is already reached or is not less than your current weight. No weight loss calculation needed.")
         else:
