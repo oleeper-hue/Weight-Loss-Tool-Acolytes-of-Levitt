@@ -130,9 +130,9 @@ if st.button("Predict"):
 
 if new_user_df['Gender'].iloc[0] == 'Male':
     bmr = 88.362 + (13.397 * new_user_df['Weight (kg)'].iloc[0]) + (4.799 * new_user_df['Height (m)'].iloc[0] * 100) - (5.677 * new_user_df['Age'].iloc[0])
-  elif new_user_df['Gender'].iloc[0] == 'Female':
+elif new_user_df['Gender'].iloc[0] == 'Female':
     bmr = 447.593 + (9.247 * new_user_df['Weight (kg)'].iloc[0]) + (3.098 * new_user_df['Height (m)'].iloc[0] * 100) - (4.330 * new_user_df['Age'].iloc[0])
-  else:
+else:
     bmr = None # Handle cases where gender is not Male or Female
 
 adjusted_bmr = bmr + predicted_cals/7
