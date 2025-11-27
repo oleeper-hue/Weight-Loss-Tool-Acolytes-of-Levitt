@@ -110,6 +110,8 @@ new_user = {
     "BMI": bmi
 }
 
+new_user_df = pd.DataFrame([new_user])
+
 st.divider()
 if st.button("Predict"):
     try:
@@ -177,4 +179,4 @@ def timeline(predicted_cals):
       st.success(np.round(daily_calorie_deficiency, decimals=2))
 
       st.success("Daily Calorie Target:")
-      st.success(np.round(daily_calorie_target, decimals=2))w_user_df = pd.DataFrame([new_user])
+      st.success(np.round(daily_calorie_target, decimals=2))
