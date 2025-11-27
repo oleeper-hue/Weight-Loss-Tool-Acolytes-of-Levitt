@@ -58,12 +58,19 @@ st.caption("Two steps for machine learning to guide weight loss")
 
 st.header("Step 1: Enter Exercise Information to Estimate Calorie Burn")
 
+def num_slider(name, default, lo, hi, step=1, id=None):
+    r = numerical_ranges.get(name, {})
+    lo = int(r.get("min", lo))
+    hi = int(r.get("max", hi))
+    val = int(r.get("default", default))
+    return st.slider(name.replace("_", " ").title(), min_value=lo, max_value=hi, value=val, step=step, key=id)
+
 def num_slider_float(name, default, lo, hi, step=1, id=None):
     r = numerical_ranges.get(name, {})
     lo = float(r.get("min", lo))
     hi = float(r.get("max", hi))
     val = float(r.get("default", default))
-    return st.slider(name.replace("_", " ").title(), min_value=lo, max_value=hi, value=val, step=step, id=None)
+    return st.slider(name.replace("_", " ").title(), min_value=lo, max_value=hi, value=val, step=step, key=id)
 
 #all dropdowns for categorical features as they will appear in Streamlit
 gender = st.selectbox("Gender", categorical_unique_vals["Gender"])
