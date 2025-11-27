@@ -57,7 +57,6 @@ st.title("Weight Loss Tool")
 st.caption("Two steps for machine learning to guide weight loss")
 
 st.header("Step 1: Enter Exercise Information to Estimate Calorie Burn")
-step_1_completed = False
 
 def num_slider(name, default, lo, hi, step=1, id=None):
     r = numerical_ranges.get(name, {})
@@ -123,7 +122,6 @@ if st.button("Predict"):
         if pred:
             st.success(str(np.round(pred, decimals=2)) + " weekly calorie burn!")
             st.success("Move to step 2 for calorie intake timeline to achieve goal weight")
-            step_1_completed = True
         else:
             st.error("Prediction Error")
 
@@ -138,7 +136,7 @@ goal_weight_kg = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01, id='goal')
 desired_timeline_weeks = st.slider("Weeks to Reach Goal Weight", min_value=4, max_value=104, value=16, step=1)
 
 #if (goal_weight_kg and desired_timeline_weeks and step_1_completed):
-if (st.button("Calculate Calorie Intake for Timeline") and step_1_completed):
+if st.button("Calculate Calorie Intake for Timeline"):
     try:
         pred = best_model.predict(new_user_df)[0]
         if new_user_df['Gender'].iloc[0] == 'Male':
@@ -179,5 +177,3 @@ if (st.button("Calculate Calorie Intake for Timeline") and step_1_completed):
             st.success(np.round(daily_calorie_target, decimals=2))
     except Exception as e:
         st.error(f"Inference failed: {e}")
-else:
-    st.error('Please complete step 1 before attempting step 2')
