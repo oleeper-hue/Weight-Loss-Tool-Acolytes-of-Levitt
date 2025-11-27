@@ -145,7 +145,7 @@ if (goal_weight_kg and desired_timeline_weeks):
         else:
             bmr = None # Handle cases where gender is not Male or Female
         
-        adjusted_bmr = bmr + predicted_cals/7
+        adjusted_bmr = bmr + pred/7
 
         current_weight_kg = new_user_df['Weight (kg)'].iloc[0]
 
