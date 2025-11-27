@@ -58,12 +58,12 @@ st.caption("Two steps for machine learning to guide weight loss")
 
 st.header("Step 1: Enter Exercise Information to Estimate Calorie Burn")
 
-def num_slider(name, default, lo, hi, step=1):
+def num_slider(name, default, lo, hi, step=1, id=None):
     r = numerical_ranges.get(name, {})
     lo = int(r.get("min", lo))
     hi = int(r.get("max", hi))
     val = int(r.get("default", default))
-    return st.slider(name.replace("_", " ").title(), min_value=lo, max_value=hi, value=val, step=step)
+    return st.slider(name.replace("_", " ").title(), min_value=lo, max_value=hi, value=val, step=step, key=id)
 
 def num_slider_float(name, default, lo, hi, step=1):
     r = numerical_ranges.get(name, {})
@@ -80,7 +80,7 @@ experience = experience_ord[experience_label]
 
 # all sliders for numeric features as they will appear in Streamlit
 age = num_slider("Age", 2, 1, 3)
-weight = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01)
+weight = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01, id='current')
 height = num_slider_float("Height (m)", 2, 1, 3, step=0.01)
 max_bpm = num_slider("Max_BPM", 2, 1, 3)
 avg_bpm = num_slider("Avg_BPM", 2, 1, 3)
@@ -131,7 +131,7 @@ def timeline(predicted_cals):
   st.divider()
   st.subheader("Please enter your goal weight and weeks to achieve goal weight")
   # sliders for goal weight and weeks to reach goal weight
-  goal_weight_kg = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01, key='target')
+  goal_weight_kg = num_slider_float("Weight (kg)", 2, 1, 3, step=0.01, id='target')
   desired_timeline_weeks = st.slider("Weeks to Reach Goal Weight", min_value=4, max_value=104, value=16, step=1)
 
   CALORIES_PER_LB_LOSS = 500 # 500 calorie deficit = 1 lb loss
